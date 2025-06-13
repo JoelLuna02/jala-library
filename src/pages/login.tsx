@@ -2,6 +2,7 @@ import { signIn } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, FormEvent } from "react";
+import { ModeToggle } from "@/components/ToggleTheme";
 
 export default function Login() {
 	const [username, setUsername] = useState("");
@@ -29,6 +30,9 @@ export default function Login() {
 			<Head>
 				<title>Login</title>
 			</Head>
+
+			<ModeToggle />
+
 			<div>Login secction</div>
 			<form onSubmit={handleLogin}>
 				{error && <p style={{ color: "red" }}>{error}</p>}
