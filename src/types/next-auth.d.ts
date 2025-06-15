@@ -10,10 +10,10 @@ declare module "next-auth" {
 			id: number;
 			email: string;
 			username: string;
-			role: "admin" | "employee" | "client";
+			role: string;
 		};
 	}
 	interface User {
-		id: string;
+		id: number;
 	}
 }

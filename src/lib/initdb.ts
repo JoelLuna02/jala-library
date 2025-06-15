@@ -2,7 +2,16 @@
 /* eslint-disable no-unused-vars */
 
 import { sequelize } from "./sequelize";
-import User from "../models/User";
+
+import Author from "@/models/Author";
+import Book from "@/models/Book";
+import BookAuthor from "@/models/BookAuthor";
+import Category from "@/models/Category";
+import Editorial from "@/models/Editorial";
+import Loan from "@/models/Loan";
+import LoanDetails from "@/models/LoanDetails";
+import Role from "@/models/Role";
+import User from "@/models/User";
 
 export async function initDB() {
 	await sequelize.authenticate();

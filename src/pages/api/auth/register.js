@@ -2,10 +2,10 @@ import bcrypt from "bcrypt";
 
 import { initDB } from "@/lib/initdb";
 import User from "../../../models/User";
+import Role from "../../../models/Role";
 
 export default async function handler(req, res) {
 	if (req.method !== "POST") return res.status(405).json({ error: "Method Not Allowed" });
-	const validRoles = ["admin", "employee", "client"];
 	const { firstname, lastname, email, username, password, role } = req.body;
 	try {
 		await initDB();
@@ -17,19 +17,16 @@ export default async function handler(req, res) {
 		if (existingEmail) {
 			return res.status(400).json({ error: "Email already exists" });
 		}
-		if (role != null) {
-			if (!validRoles.includes(role)) {
-				return res.status(400).json({ message: "Invalid role" });
-			}
+		const role = await Role.findOne({ where: { name: role }});
+		if (!role) {
+			return res.status(400).json({ error: "Invalid role provided" });
 		}
 		const hashedPassword = await bcrypt.hash(password, 10);
 		const newUser = await User.create({
-			firstname,
-			lastname,
-			email,
-			username,
+			firstname, 	lastname,
+			email,		username,
 			password: hashedPassword,
-			role: role || "reader", // Default to 'reader' if no role is provided
+			role: role.role_id
 		});
 		return res.status(201).json({
 			data: {
@@ -38,7 +35,7 @@ export default async function handler(req, res) {
 				lastname: newUser.lastname,
 				email: newUser.email,
 				username: newUser.username,
-				role: newUser.role,
+				role: newUser.role.name,
 			},
 			message: "User registered successfully",
 		});
