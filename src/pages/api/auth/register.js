@@ -4,6 +4,10 @@ import { initDB } from "@/lib/initdb";
 import User from "../../../models/User";
 import Role from "../../../models/Role";
 
+/**
+ * @param {import("next").NextApiRequest} req
+ * @param {import("next").NextApiResponse} res
+ */
 export default async function handler(req, res) {
 	if (req.method !== "POST") return res.status(405).json({ error: "Method Not Allowed" });
 	const { firstname, lastname, email, username, password, role } = req.body;
@@ -17,16 +21,15 @@ export default async function handler(req, res) {
 		if (existingEmail) {
 			return res.status(400).json({ error: "Email already exists" });
 		}
-		const role = await Role.findOne({ where: { name: role }});
-		if (!role) {
-			return res.status(400).json({ error: "Invalid role provided" });
-		}
+		const existsrole = await Role.findOne({ where: { name: role || "reader" } });
 		const hashedPassword = await bcrypt.hash(password, 10);
 		const newUser = await User.create({
-			firstname, 	lastname,
-			email,		username,
+			firstname,
+			lastname,
+			email,
+			username,
 			password: hashedPassword,
-			role: role.role_id
+			role_id: existsrole.role_id,
 		});
 		return res.status(201).json({
 			data: {
@@ -35,7 +38,7 @@ export default async function handler(req, res) {
 				lastname: newUser.lastname,
 				email: newUser.email,
 				username: newUser.username,
-				role: newUser.role.name,
+				role: newUser.role_id.name,
 			},
 			message: "User registered successfully",
 		});

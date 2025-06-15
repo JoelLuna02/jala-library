@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 
 import User from "../../../models/User";
+import Role from "../../../models/Role";
 
 export default NextAuth({
 	secret: process.env.NEXTAUTH_SECRET,
@@ -20,7 +21,13 @@ export default NextAuth({
 				}
 				const isValid = await bcrypt.compare(credentials.password, user.password);
 				if (!isValid) throw new Error("Incorrect password");
-				return { id: user.user_id, username: user.username, email: user.email, role: user.role };
+				const role = await Role.findByPk(user.role_id);
+				return {
+					id: user.user_id,
+					username: user.username,
+					email: user.email,
+					role: role.name,
+				};
 			},
 		}),
 	],
@@ -35,6 +42,7 @@ export default NextAuth({
 			if (user) {
 				token.id = user.id;
 				token.username = user.username;
+				token.email = user.email;
 				token.role = user.role;
 			}
 			return token;

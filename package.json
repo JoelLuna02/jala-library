@@ -9,14 +9,13 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
-		"@popperjs/core": "^2.11.8",
+		"@hookform/resolvers": "^5.1.1",
 		"@radix-ui/react-dropdown-menu": "^2.1.15",
+		"@radix-ui/react-label": "^2.1.7",
 		"@radix-ui/react-slot": "^1.2.3",
 		"bcrypt": "^6.0.0",
-		"bootstrap": "^4.6.2",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
-		"jquery": "^3.7.1",
 		"lucide-react": "^0.514.0",
 		"next": "15.3.3",
 		"next-auth": "^4.24.11",
@@ -25,8 +24,10 @@
 		"pg-hstore": "^2.3.4",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
+		"react-hook-form": "^7.58.0",
 		"sequelize": "^6.37.7",
-		"tailwind-merge": "^3.3.1"
+		"tailwind-merge": "^3.3.1",
+		"zod": "^3.25.64"
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3",
